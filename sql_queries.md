@@ -1,30 +1,26 @@
-## Importing csv file in PostgreSQL
+## Importing csv files in PostgreSQL
 
-### Importing customer table
+### Creating customer table and importing data
 
 ```sql
 CREATE TABLE IF NOT EXISTS public.customer
 (
-    "INDIVIDUAL_ID" numeric PRIMARY KEY,
-    "ADDRESS_ID" numeric NOT NULL,
-    "CURRENT_ANN_AMT" double precision,
-    "DAYS_TENURE" numeric,
-    "CUST_ORIG_DATE" date,
-    "AGE_IN_YEARS" numeric,
-    "DATE_OF_BIRTH" date,
-    "SOCIAL_SECURITY_NUMBER" varchar,
-    CONSTRAINT customer_pkey PRIMARY KEY ("INDIVIDUAL_ID")
-    FOREIGN KEY ("ADDRESS_ID") REFERENCES public.address("ADDRESS_ID")
+    individual_id numeric PRIMARY KEY,
+    address_id numeric NOT NULL,
+    current_ann_amt double precision,
+    days_tenure numeric,
+    cust_orig_date date,
+    age_in_years numeric,
+    date_of_birth date,
+    social_security_number varchar,
+    FOREIGN KEY (address_id)
+		REFERENCES public.address(address_id)
 )
 
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.customer
-    OWNER to postgres;
 
 ```
 
-### Importing address table
+### Creating address table and importing data
 
 ```sql
 CREATE TABLE IF NOT EXISTS public.address(
@@ -39,7 +35,7 @@ CREATE TABLE IF NOT EXISTS public.address(
 );
 ```
 
-### Creating and Importing demographic table
+### Creating demographic table and Importing data
 
 ```sql
 CREATE TABLE IF NOT EXISTS public.demographic (
@@ -57,3 +53,15 @@ CREATE TABLE IF NOT EXISTS public.demographic (
 )
 ```
 
+### Creating and importing termination table
+
+```sql
+
+CREATE TABLE IF NOT EXISTS public.termination(
+
+	individual_id numeric,
+	acct_suspd_date date -- date account was suspended
+	FOREIGN KEY individual_id REFERENCING customer(individual_id)
+)
+
+```
