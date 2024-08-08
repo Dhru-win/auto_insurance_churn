@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.customer
     individual_id numeric PRIMARY KEY,
     address_id numeric NOT NULL,
     current_ann_amt double precision,
-    days_tenure numeric,
+    days_tenure numeric,  -- Days 
     cust_orig_date date,
     age_in_years numeric,
     date_of_birth date,
@@ -65,3 +65,43 @@ CREATE TABLE IF NOT EXISTS public.termination(
 )
 
 ```
+
+
+## Questions to analyze
+
+1. Analyze in what year/month customers left the most.
+
+#### Query 
+```sql
+-- Churn by year
+SELECT 
+	EXTRACT(YEAR FROM acct_suspd_date) AS year_left,
+	count(*) AS num_customers_left
+FROM
+	termination
+GROUP BY
+	year_left
+ORDER BY 
+	year_left
+
+-- Churn by month
+
+SELECT 
+	EXTRACT(MONTH FROM acct_suspd_date) AS month_left,
+	count(*) AS num_customers_left
+FROM
+	termination
+GROUP BY
+	month_left
+ORDER BY 
+	month_left
+
+```
+#### Answer
+
+248,462 customers left in the year 2022 which is almost 12 times the customer leaving compared to last year i.e. 20,797 in the year 2021.
+
+Customer left the company in a uniform pattern through out the years. Number of customers leaving per month is in the range 22,200 to 22,700.
+1. Who are the churned customers
+	* 
+2. calculate churn rate over different periods of time monthly quaterly, yearly
