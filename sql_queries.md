@@ -102,6 +102,71 @@ ORDER BY
 248,462 customers left in the year 2022 which is almost 12 times the customer leaving compared to last year i.e. 20,797 in the year 2021.
 
 Customer left the company in a uniform pattern through out the years. Number of customers leaving per month is in the range 22,200 to 22,700.
+
++++++++++++++++++++++++++++++++++++++++++++++
+
+SELECT * , "DAYS_TENURE"/365 AS years_tenure
+FROM customer c
+	JOIN termination t
+		 ON c."INDIVIDUAL_ID" = t.individual_id
+		 
+		 
+-- Average, min, max, median Income of customers
+
+SELECT 
+	avg(income), min(income), max(income), PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY income) AS median
+FROM 
+	demographic
+LIMIT(10)
+-- Average income of the customers is about $80,000.
+
+------------------------------------------------------
+
+-- what is average amount customers paid in a year
+
+SELECT 
+	AVG("CURRENT_ANN_AMT")
+FROM 
+	customer
+
+-- annual amount paid by customers is about $931
+
+
+
+-- average age 
+
+
+SELECT
+	AVG("AGE_IN_YEARS")
+FROM 
+	customer
+
+-- average age is 55
+
+-- avg tenure
+SELECT
+	AVG("DAYS_TENURE")/365 as Years_tenure
+FROM
+	customer
+
+-- customers per household
+
+SELECT
+	COUNT("INDIVIDUAL_ID"), ad."ADDRESS_ID", "CITY", "STATE", "COUNTY"
+FROM 
+	customer as cs
+		JOIN address as ad
+			ON cs."ADDRESS_ID" = ad."ADDRESS_ID"
+GROUP BY 
+	ad."ADDRESS_ID", "CITY", "STATE", "COUNTY"
+	--clean data here
+	
+
+
+
+
+
+
 1. Who are the churned customers
 	* 
 2. calculate churn rate over different periods of time monthly quaterly, yearly
